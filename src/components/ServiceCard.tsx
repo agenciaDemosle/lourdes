@@ -101,15 +101,14 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
             />
 
             {/* Modal Container */}
-            <div className="fixed inset-0 z-[9999] overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4">
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
                 <motion.div
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.9, opacity: 0 }}
                   transition={{ type: "spring", damping: 20 }}
                   onClick={(e) => e.stopPropagation()}
-                  className="relative bg-white shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
+                  className="relative bg-white shadow-2xl max-w-2xl w-full overflow-hidden flex flex-col"
                 >
                   {/* Compact Header with Icon and Title */}
                   <div className="bg-gradient-to-r from-brand-red to-red-700 p-4 flex items-center justify-between">
@@ -131,8 +130,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                     </motion.button>
                   </div>
 
-                  {/* Scrollable Content */}
-                  <div className="overflow-y-auto flex-1">
+                  {/* Content without scroll */}
+                  <div className="flex-1">
                     {/* Compact Image */}
                     <div className="relative h-32 sm:h-40">
                       <img
@@ -195,7 +194,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                     </div>
                   </div>
                 </motion.div>
-              </div>
             </div>
           </>
         )}

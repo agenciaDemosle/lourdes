@@ -6,7 +6,7 @@ function App() {
   return (
     <SEOProvider>
       <Router>
-        <div className="overflow-x-hidden w-full">
+        <div className="overflow-x-hidden w-full" style={{height: 'auto', minHeight: 'auto', maxHeight: 'none'}}>
           <Home />
         </div>
       </Router>

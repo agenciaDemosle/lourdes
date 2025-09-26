@@ -8,6 +8,7 @@ import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
 import Section from './Section';
 import Button from './Button';
 import { sendContact } from '../lib/formApi';
+import { trackFormStart, trackFormSubmit, trackPhoneClick, trackConversion } from '../services/gtm';
 
 const contactSchema = z.object({
   nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
@@ -21,6 +22,7 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 const ContactForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formStarted, setFormStarted] = useState(false);
 
   const {
     register,
@@ -31,6 +33,14 @@ const ContactForm: React.FC = () => {
     resolver: zodResolver(contactSchema),
   });
 
+  // Función para trackear cuando el usuario empieza a llenar el formulario
+  const handleFormStart = () => {
+    if (!formStarted) {
+      trackFormStart('contact');
+      setFormStarted(true);
+    }
+  };
+
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
 
@@ -38,6 +48,12 @@ const ContactForm: React.FC = () => {
       const result = await sendContact(data);
 
       if (result.success) {
+        // Trackear envío exitoso del formulario
+        trackFormSubmit('contact', data.servicio);
+
+        // Trackear como conversión para Google Ads
+        trackConversion('form_submit', 100, data.servicio);
+
         toast.success(result.message || '¡Mensaje enviado correctamente!');
         reset();
       } else {
@@ -112,6 +128,7 @@ const ContactForm: React.FC = () => {
                 id="nombre"
                 className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-gray-900 focus:border-brand-red transition-all"
                 placeholder="Juan Pérez"
+                onFocus={handleFormStart}
               />
               {errors.nombre && (
                 <p className="mt-1 text-sm text-red-600">{errors.nombre.message}</p>
@@ -248,6 +265,12 @@ const ContactForm: React.FC = () => {
                       <a
                         href={info.link}
                         className="text-gray-600 hover:text-brand-red transition-colors"
+                        onClick={() => {
+                          if (info.link?.startsWith('tel:')) {
+                            trackPhoneClick('contact_info');
+                            trackConversion('phone_call', 80);
+                          }
+                        }}
                       >
                         {info.content}
                       </a>
@@ -271,7 +294,11 @@ const ContactForm: React.FC = () => {
               variant="primary"
               size="md"
               fullWidth
-              onClick={() => window.location.href = 'tel:+56912345678'}
+              onClick={() => {
+                trackPhoneClick('emergency_section');
+                trackConversion('phone_call', 80);
+                window.location.href = 'tel:+56912345678';
+              }}
             >
               <Phone className="w-5 h-5 mr-2" />
               LLAMAR AHORA

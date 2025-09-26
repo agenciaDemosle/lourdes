@@ -8,8 +8,7 @@ interface ContactPayload {
 
 export const sendContact = async (payload: ContactPayload): Promise<{ success: boolean; message: string }> => {
   try {
-    // Simulación de envío - en producción esto sería una llamada real a tu backend
-    const response = await fetch('/api/contact', {
+    const response = await fetch('/api/contact.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -17,35 +16,14 @@ export const sendContact = async (payload: ContactPayload): Promise<{ success: b
       body: JSON.stringify(payload),
     });
 
-    // Para desarrollo, simulamos una respuesta exitosa
-    if (!response.ok && process.env.NODE_ENV === 'development') {
-      console.log('Datos del formulario:', payload);
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      return {
-        success: true,
-        message: 'Mensaje enviado correctamente (modo desarrollo)',
-      };
-    }
-
     if (!response.ok) {
-      throw new Error('Error al enviar el formulario');
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error enviando formulario:', error);
-
-    // En desarrollo, simular éxito
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Datos del formulario (desarrollo):', payload);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      return {
-        success: true,
-        message: 'Mensaje enviado correctamente (modo desarrollo)',
-      };
-    }
 
     return {
       success: false,

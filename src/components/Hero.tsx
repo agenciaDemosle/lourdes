@@ -9,7 +9,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden">
+    <section className="relative py-20 overflow-hidden">
       {/* Background Image with Dark Overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -22,8 +22,8 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
-      <div className="container-custom relative z-10 min-h-screen">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-screen py-20 pt-24 px-4 sm:px-6 lg:px-8">
+      <div className="container-custom relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center py-20 pt-24 px-4 sm:px-6 lg:px-8">
 
           {/* Left Content */}
           <motion.div

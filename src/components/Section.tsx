@@ -26,18 +26,20 @@ const Section: React.FC<SectionProps> = ({
   const paddingClass = isDiagonal ? 'py-24' : 'py-16';
 
   return (
-    <motion.section
+    <section
       id={id}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.5 }}
       className={`${bgColorClasses[bgColor]} ${diagonalClass} ${paddingClass} ${className}`}
     >
-      <div className="container-custom">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: '-100px' }}
+        transition={{ duration: 0.5 }}
+        className="container-custom"
+      >
         {children}
-      </div>
-    </motion.section>
+      </motion.div>
+    </section>
   );
 };
 
