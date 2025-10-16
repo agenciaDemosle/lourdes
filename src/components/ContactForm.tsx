@@ -36,7 +36,7 @@ const ContactForm: React.FC = () => {
   // Función para trackear cuando el usuario empieza a llenar el formulario
   const handleFormStart = () => {
     if (!formStarted) {
-      trackFormStart('contact');
+      trackFormStart('contact', 'general');
       setFormStarted(true);
     }
   };
@@ -51,8 +51,8 @@ const ContactForm: React.FC = () => {
         // Trackear envío exitoso del formulario
         trackFormSubmit('contact', data.servicio);
 
-        // Trackear como conversión para Google Ads
-        trackConversion('form_submit', 100, data.servicio);
+        // Trackear como conversión para Google Ads con valor real del servicio
+        trackConversion('form_submit', data.servicio);
 
         toast.success(result.message || '¡Mensaje enviado correctamente!');
         reset();
@@ -70,8 +70,8 @@ const ContactForm: React.FC = () => {
     {
       icon: Phone,
       title: 'Teléfono',
-      content: '+56 9 1234 5678',
-      link: 'tel:+56912345678',
+      content: '+56 9 7693 1562',
+      link: 'tel:+56976931562',
     },
     {
       icon: Mail,
@@ -267,8 +267,8 @@ const ContactForm: React.FC = () => {
                         className="text-gray-600 hover:text-brand-red transition-colors"
                         onClick={() => {
                           if (info.link?.startsWith('tel:')) {
-                            trackPhoneClick('contact_info');
-                            trackConversion('phone_call', 80);
+                            trackPhoneClick('contact_info', 'general');
+                            trackConversion('phone_call', 'general');
                           }
                         }}
                       >
@@ -295,9 +295,9 @@ const ContactForm: React.FC = () => {
               size="md"
               fullWidth
               onClick={() => {
-                trackPhoneClick('emergency_section');
-                trackConversion('phone_call', 80);
-                window.location.href = 'tel:+56912345678';
+                trackPhoneClick('emergency_section', 'emergencia');
+                trackConversion('phone_call', 'emergencia');
+                window.location.href = 'tel:+56976931562';
               }}
             >
               <Phone className="w-5 h-5 mr-2" />

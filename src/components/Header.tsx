@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Phone } from 'lucide-react';
+import { useMobileMenu } from '../context/MobileMenuContext';
+import { trackWhatsAppClick, trackConversion } from '../services/gtm';
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isMobileMenuOpen, setIsMobileMenuOpen } = useMobileMenu();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -111,7 +113,13 @@ const Header: React.FC = () => {
 
               {/* Call Button */}
               <motion.a
-                href="tel:+56912345678"
+                href="https://wa.me/56976931562?text=Hola,%20necesito%20información%20sobre%20sus%20servicios%20de%20fumigación"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  trackWhatsAppClick('header_desktop', 'emergencia');
+                  trackConversion('whatsapp_click', 'emergencia');
+                }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="relative ml-4 flex items-center gap-2 bg-brand-red text-white px-6 py-2.5 font-bold uppercase tracking-wider text-sm overflow-hidden group rounded-lg no-focus-outline"
@@ -185,6 +193,15 @@ const Header: React.FC = () => {
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white shadow-2xl z-50 lg:hidden overflow-y-auto"
             >
+              {/* Close Button */}
+              <motion.button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-lg transition-colors z-10"
+                whileTap={{ scale: 0.9 }}
+              >
+                <X className="w-6 h-6 text-gray-900" />
+              </motion.button>
+
               {/* Menu Header */}
               <div className="p-6 border-b border-gray-200">
                 <img
@@ -240,7 +257,13 @@ const Header: React.FC = () => {
               {/* Emergency Button */}
               <div className="p-6 border-t border-gray-200">
                 <motion.a
-                  href="tel:+56912345678"
+                  href="https://wa.me/56976931562?text=Hola,%20necesito%20información%20sobre%20sus%20servicios%20de%20fumigación"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => {
+                    trackWhatsAppClick('header_mobile', 'emergencia');
+                    trackConversion('whatsapp_click', 'emergencia');
+                  }}
                   className="flex items-center justify-center gap-2 bg-brand-red text-white px-6 py-3 font-bold uppercase tracking-wider text-sm rounded-lg shadow-lg"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}

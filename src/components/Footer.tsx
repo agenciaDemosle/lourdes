@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, CheckCircle, ArrowRight, MessageCircle } from 'lucide-react';
+import { trackPhoneClick, trackWhatsAppClick, trackConversion } from '../services/gtm';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -25,7 +26,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white overflow-hidden">
+    <footer className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white overflow-hidden pb-20 lg:pb-0">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -46,7 +47,11 @@ const Footer: React.FC = () => {
                 </div>
               </div>
               <motion.a
-                href="tel:+56912345678"
+                href="tel:+56976931562"
+                onClick={() => {
+                  trackPhoneClick('footer_cta', 'emergencia');
+                  trackConversion('phone_call', 'emergencia');
+                }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-2 bg-brand-red text-white px-6 py-3 font-black uppercase tracking-wider hover:bg-red-700 transition-all group"
@@ -186,8 +191,15 @@ const Footer: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-xs text-gray-400 uppercase">Teléfono</p>
-                    <a href="tel:+56912345678" className="text-gray-300 hover:text-brand-red transition-colors font-bold">
-                      +56 9 1234 5678
+                    <a
+                      href="tel:+56976931562"
+                      onClick={() => {
+                        trackPhoneClick('footer_contact_info', 'general');
+                        trackConversion('phone_call', 'general');
+                      }}
+                      className="text-gray-300 hover:text-brand-red transition-colors font-bold"
+                    >
+                      +56 9 7693 1562
                     </a>
                   </div>
                 </motion.div>
@@ -231,9 +243,13 @@ const Footer: React.FC = () => {
                   <div>
                     <p className="text-xs text-gray-400 uppercase">WhatsApp</p>
                     <a
-                      href="https://wa.me/56912345678?text=Hola,%20necesito%20información%20sobre%20sus%20servicios%20de%20fumigación"
+                      href="https://wa.me/56976931562?text=Hola,%20necesito%20información%20sobre%20sus%20servicios%20de%20fumigación"
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => {
+                        trackWhatsAppClick('footer_contact_info', 'general');
+                        trackConversion('whatsapp_click', 'general');
+                      }}
                       className="text-gray-300 hover:text-green-500 transition-colors font-bold text-sm"
                     >
                       Escribir mensaje

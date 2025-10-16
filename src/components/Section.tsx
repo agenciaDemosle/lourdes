@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useSectionTracking } from '../hooks/useSectionTracking';
 
 interface SectionProps {
   children: React.ReactNode;
@@ -16,6 +17,9 @@ const Section: React.FC<SectionProps> = ({
   isDiagonal = false,
   bgColor = 'white'
 }) => {
+  // Track cuando la sección se ve (solo si tiene id)
+  const sectionRef = useSectionTracking(id || 'unnamed_section');
+
   const bgColorClasses = {
     white: 'bg-brand-white text-brand-black',
     red: 'bg-brand-red text-white',
@@ -28,6 +32,7 @@ const Section: React.FC<SectionProps> = ({
   return (
     <section
       id={id}
+      ref={sectionRef as any}
       className={`${bgColorClasses[bgColor]} ${diagonalClass} ${paddingClass} ${className}`}
     >
       <motion.div

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { trackServiceClick, trackCTAClick } from '../services/gtm';
 
 interface ServiceCardProps {
   icon: LucideIcon;
@@ -45,7 +46,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         transition={{ duration: 0.6, delay, ease: "easeOut" }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="group relative bg-white border-2 border-gray-200 overflow-hidden hover:border-brand-red transition-all duration-500 shadow-lg hover:shadow-xl"
+        className="group relative bg-white border-2 border-gray-200 overflow-hidden hover:border-brand-red transition-all duration-500 shadow-lg hover:shadow-xl flex flex-col h-full"
       >
         {/* Image Container */}
         <div className="relative h-48 overflow-hidden">
@@ -69,15 +70,18 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-6 flex flex-col flex-grow">
           <h3 className="text-2xl font-black text-gray-900 mb-3 uppercase tracking-wider">{title}</h3>
-          <p className="text-gray-600 mb-6 line-clamp-2">{description}</p>
+          <p className="text-gray-600 mb-6 line-clamp-3 flex-grow">{description}</p>
 
           <motion.button
             whileHover={{ x: 5 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center text-brand-red font-black group/btn uppercase tracking-wider"
+            onClick={() => {
+              trackServiceClick(title, 'detail_view');
+              setIsModalOpen(true);
+            }}
+            className="flex items-center text-brand-red font-black group/btn uppercase tracking-wider mt-auto"
           >
             <span>Ver más detalles</span>
             <ArrowRight className="w-5 h-5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
@@ -174,6 +178,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => {
+                            trackCTAClick('SOLICITAR SERVICIO', `service_modal_${title}`);
                             setIsModalOpen(false);
                             document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
                           }}

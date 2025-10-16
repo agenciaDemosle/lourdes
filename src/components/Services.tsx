@@ -3,14 +3,17 @@ import { motion } from 'framer-motion';
 import {
   MousePointer2,
   Bug,
-  Wind,
-  Wheat,
   Shield,
   Calendar,
-  Sparkles
+  Sparkles,
+  Trash2,
+  Building2,
+  Droplets,
+  Sprout
 } from 'lucide-react';
 import Section from './Section';
 import ServiceCard from './ServiceCard';
+import { trackCTAClick } from '../services/gtm';
 
 const services = [
   {
@@ -32,53 +35,75 @@ const services = [
     ]
   },
   {
-    icon: Bug,
-    title: 'Desinsectación',
-    description: 'Control profesional de insectos voladores y rastreros. Combatimos chinches, termitas y cucarachas con químicos de alto espectro y residualidad, aplicando dosis recomendadas por fabricantes.',
-    image: '/images/desinsectacion.jpeg',
-    details: [
-      'Control de insectos voladores y rastreros',
-      'Eliminación de chinches y termitas',
-      'Combate especializado de cucarachas (blatella germánica)',
-      'Químicos de alto espectro y residualidad',
-      'Dosis recomendadas por fabricantes',
-      'Prevención de resistencia a productos químicos',
-      'Tratamiento para departamentos',
-      'Especial para establecimientos de comida',
-      'Manejo profesional de materia orgánica',
-      'Técnicos especialistas certificados'
-    ]
-  },
-  {
-    icon: Wind,
-    title: 'Sanitización de Ambientes',
-    description: 'Solución completa para sanitizar contra virus, bacterias y hongos (COVID-19). Contamos con resolución sanitaria, maquinarias de alta gama ULV y productos con registro ISP.',
-    image: '/images/sanitizaciones.jpeg',
-    details: [
-      'Sanitización contra virus, bacterias y hongos',
-      'Protocolo especializado COVID-19',
-      'Máquina ULV de ultra bajo volumen',
-      'Productos de última generación',
-      'Marcas reconocidas nacionales e internacionales',
-      'Productos con registro ISP',
-      'Resolución sanitaria vigente',
-      'Técnicos especialistas en sanitización',
-      'Cumplimiento de estándares del mercado',
-      'Servicio para hogares, empresas y locales comerciales'
-    ]
-  },
-  {
-    icon: Wheat,
-    title: 'Control Agrícola',
-    description: 'Manejo integrado de plagas en cultivos con soluciones preventivas y correctivas.',
+    icon: Trash2,
+    title: 'Limpieza de Shafts de Basura',
+    description: 'Los shafts de basura en edificios requieren mantención regular para evitar malos olores, plagas y obstrucciones. Nuestro servicio asegura ductos limpios, higiénicos y en correcto funcionamiento.',
     image: '/images/otros.jpeg',
     details: [
-      'Evaluación fitosanitaria completa',
-      'Control biológico y químico',
-      'Aplicación con equipos especializados',
-      'Cumplimiento normativa SAG',
-      'Asesoría técnica permanente',
-      'Registro de aplicaciones'
+      'Mantenimiento preventivo anual',
+      'Eliminación de malos olores',
+      'Control de plagas asociado',
+      'Prevención de obstrucciones',
+      'Garantiza un entorno saludable',
+      'Protección para residentes y trabajadores',
+      'Limpieza profunda de ductos',
+      'Desinfección completa',
+      'Servicio especializado para edificios',
+      'Cumplimiento de normativas sanitarias'
+    ]
+  },
+  {
+    icon: Bug,
+    title: 'Control de Plagas',
+    description: 'Fumigaciones Lourdes ofrece planes adaptados a edificios residenciales, comunidades, oficinas y áreas comunes. Nuestro objetivo es proteger la salud de los residentes y mantener las instalaciones libres de riesgos sanitarios.',
+    image: '/images/desinsectacion.jpeg',
+    details: [
+      'Respuesta rápida ante emergencias',
+      'Técnicos especializados y certificados',
+      'Informes claros y seguimiento continuo',
+      'Control de insectos voladores y rastreros',
+      'Eliminación de chinches y termitas',
+      'Combate especializado de cucarachas',
+      'Planes adaptados a edificios residenciales',
+      'Protección para comunidades y oficinas',
+      'Mantenimiento de áreas comunes',
+      'Prevención de riesgos sanitarios'
+    ]
+  },
+  {
+    icon: Droplets,
+    title: 'Desinfección y Limpieza',
+    description: 'Ofrecemos servicios de desinfección profesional en salas de basura, áreas comunes y espacios de alto tránsito. Aplicamos productos certificados que aseguran un ambiente seguro e higiénico.',
+    image: '/images/sanitizaciones.jpeg',
+    details: [
+      'Protocolos sanitarios actualizados',
+      'Productos aprobados por la autoridad sanitaria',
+      'Flexibilidad de horarios para no interrumpir la operación',
+      'Desinfección de salas de basura',
+      'Limpieza de áreas comunes',
+      'Sanitización de espacios de alto tránsito',
+      'Productos certificados y seguros',
+      'Ambiente higiénico garantizado',
+      'Técnicos especializados',
+      'Cumplimiento de normativas sanitarias'
+    ]
+  },
+  {
+    icon: Sprout,
+    title: 'Herbicidas y Áreas Verdes',
+    description: 'Contamos con autorización SAG y SEREMI para la aplicación de herbicidas en áreas verdes y espacios perimetrales. Ofrecemos soluciones seguras para la eliminación de malezas en jardines, accesos y áreas comunes.',
+    image: '/images/otros.jpeg',
+    details: [
+      'Herbicidas selectivos y no selectivos',
+      'Aplicación segura y regulada',
+      'Mejora estética y sanitaria del entorno',
+      'Autorización SAG y SEREMI',
+      'Eliminación de malezas en jardines',
+      'Tratamiento de accesos y áreas comunes',
+      'Soluciones seguras y efectivas',
+      'Cumplimiento de normativas ambientales',
+      'Técnicos certificados',
+      'Mantenimiento de espacios verdes'
     ]
   },
   {
@@ -107,6 +132,24 @@ const services = [
       'Documentación para auditorías',
       'Garantía extendida',
       'Servicio personalizado'
+    ]
+  },
+  {
+    icon: Building2,
+    title: 'Compromiso con la Administración',
+    description: 'En Fumigaciones Lourdes entendemos las necesidades de las comunidades y administraciones de edificios. Ofrecemos informes de gestión, trazabilidad de cada servicio y asesoría técnica permanente.',
+    image: '/images/empresa.jpeg',
+    details: [
+      'Informes de gestión y trazabilidad digital',
+      'Atención personalizada',
+      'Adaptación a los tiempos del cliente',
+      'Asesoría técnica permanente',
+      'Seguimiento continuo de servicios',
+      'Documentación completa y detallada',
+      'Respuesta rápida a consultas',
+      'Planes adaptados a cada comunidad',
+      'Garantía de calidad en todos los servicios',
+      'Comunicación directa con administradores'
     ]
   }
 ];
@@ -171,7 +214,7 @@ const Services: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-0">
           {services.map((service, index) => (
             <ServiceCard
               key={index}
@@ -219,7 +262,10 @@ const Services: React.FC = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => {
+                  trackCTAClick('Consultar Servicio Personalizado', 'services_section', 'general');
+                  document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="bg-brand-red text-white px-8 py-4 font-black text-lg uppercase tracking-wider hover:bg-red-700 transition-all inline-flex items-center gap-3 border-2 border-brand-red"
               >
                 Consultar Servicio Personalizado

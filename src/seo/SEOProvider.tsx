@@ -30,7 +30,7 @@ export const SEO: React.FC<SEOProps> = ({
     name: 'Fumigaciones Lourdes',
     description: description,
     url: url,
-    telephone: '+56912345678',
+    telephone: '+56976931562',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Santiago',

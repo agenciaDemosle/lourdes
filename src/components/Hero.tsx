@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Award, Phone, ArrowRight, CheckCircle, Clock, AlertTriangle, Zap } from 'lucide-react';
+import { trackCTAClick, trackPhoneClick, trackConversion } from '../services/gtm';
 
 const Hero: React.FC = () => {
   const handleScroll = (id: string) => {
@@ -13,7 +14,7 @@ const Hero: React.FC = () => {
       {/* Background Image with Dark Overlay */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/images/2.jpg"
+          src="/images/hero1.jpg"
           alt="Background"
           className="w-full h-full object-cover"
         />
@@ -125,7 +126,10 @@ const Hero: React.FC = () => {
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8"
             >
               <button
-                onClick={() => handleScroll('contacto')}
+                onClick={() => {
+                  trackCTAClick('Cotización Inmediata', 'hero', 'general');
+                  handleScroll('contacto');
+                }}
                 className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-brand-red text-white font-black uppercase tracking-wider overflow-hidden transition-all hover:bg-red-700 text-sm sm:text-base"
               >
                 <span className="relative z-10 flex items-center justify-center">
@@ -135,7 +139,11 @@ const Hero: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               </button>
               <button
-                onClick={() => window.location.href = 'tel:+56912345678'}
+                onClick={() => {
+                  trackPhoneClick('hero', 'general');
+                  trackConversion('phone_call', 'general');
+                  window.location.href = 'tel:+56976931562';
+                }}
                 className="px-6 sm:px-8 py-3 sm:py-4 bg-black/80 border-2 border-gray-500 text-white font-black uppercase tracking-wider hover:bg-black/90 hover:border-gray-400 transition-all backdrop-blur-sm text-sm sm:text-base"
               >
                 <span className="flex items-center justify-center">

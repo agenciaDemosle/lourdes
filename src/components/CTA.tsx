@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, ArrowRight } from 'lucide-react';
+import { trackCTAClick } from '../services/gtm';
 
 const CTA: React.FC = () => {
   return (
@@ -27,7 +28,10 @@ const CTA: React.FC = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => {
+              trackCTAClick('Agendar Visita Técnica', 'cta_section', 'general');
+              document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
+            }}
             className="bg-brand-red text-white px-6 sm:px-8 py-3 sm:py-4 font-black text-base sm:text-lg uppercase tracking-wider hover:bg-red-700 transition-all inline-flex items-center group border-2 border-brand-red"
           >
             AGENDAR VISITA TÉCNICA
