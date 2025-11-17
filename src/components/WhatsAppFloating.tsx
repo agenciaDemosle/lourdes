@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
 import { useMobileMenu } from '../context/MobileMenuContext';
-import { trackWhatsAppClick, trackConversion } from '../services/gtm';
+import { trackWhatsAppClick } from '../services/gtm';
 
 const WhatsAppFloating: React.FC = () => {
   const whatsappNumber = '56976931562';
@@ -10,9 +10,13 @@ const WhatsAppFloating: React.FC = () => {
   const { isMobileMenuOpen } = useMobileMenu();
 
   const handleClick = () => {
-    // Trackear click en WhatsApp flotante
-    trackWhatsAppClick('floating', 'general');
-    trackConversion('whatsapp_click', 'general');
+    // Trackear click en WhatsApp flotante con información completa
+    trackWhatsAppClick(
+      'floating_button',
+      'general',
+      message,
+      'CONTACTAR POR WHATSAPP'
+    );
 
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');

@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Home, Utensils, GraduationCap, Factory, Wheat, Target } from 'lucide-react';
+import { Home, Utensils, GraduationCap, Factory, Wheat, Target, MessageCircle } from 'lucide-react';
 import Section from './Section';
+import { trackWhatsAppClick } from '../services/gtm';
 
 const Sectors: React.FC = () => {
   const sectors = [
@@ -21,19 +22,19 @@ const Sectors: React.FC = () => {
       icon: GraduationCap,
       title: 'Colegios y Oficinas',
       description: 'Ambientes seguros y libres de plagas para espacios educativos y laborales.',
-      image: '/images/empresa.jpeg'
+      image: '/images/colegio.png'
     },
     {
       icon: Factory,
       title: 'Industrias y Bodegas',
       description: 'Control especializado para grandes espacios y almacenes industriales.',
-      image: '/images/empresa.jpeg'
+      image: '/images/bodegas.jpeg'
     },
     {
       icon: Wheat,
       title: 'Agricultura',
       description: 'Manejo integrado de plagas para optimizar la producción agrícola.',
-      image: '/images/otros.jpeg'
+      image: '/images/agricultura.jpg'
     }
   ];
 
@@ -127,7 +128,7 @@ const Sectors: React.FC = () => {
       >
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1629909615184-74f495363b67?w=1200&h=600&fit=crop&q=80"
+            src="/images/hero2.jpg"
             alt="Servicio profesional de fumigación"
             className="w-full h-full object-cover"
           />
@@ -156,10 +157,20 @@ const Sectors: React.FC = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}
-            className="bg-brand-red text-white px-8 py-4 font-black text-lg uppercase tracking-wider hover:bg-red-700 transition-all border-2 border-brand-red"
+            onClick={() => {
+              const messageText = 'Hola, mi sector no está en la lista. Necesito una solución personalizada para control de plagas';
+              trackWhatsAppClick(
+                'sectors_section',
+                'sector_personalizado',
+                messageText,
+                'CONSULTAR POR WHATSAPP'
+              );
+              window.open(`https://wa.me/56976931562?text=${encodeURIComponent(messageText)}`, '_blank');
+            }}
+            className="bg-[#25D366] text-white px-8 py-4 font-black text-lg uppercase tracking-wider hover:bg-[#20BD5A] transition-all border-2 border-[#25D366] inline-flex items-center gap-3"
           >
-            CONSULTAR AHORA
+            <MessageCircle className="w-6 h-6" />
+            CONSULTAR POR WHATSAPP
           </motion.button>
         </div>
       </motion.div>

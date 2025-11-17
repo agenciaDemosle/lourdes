@@ -61,7 +61,7 @@ const AboutUs: React.FC = () => {
           {/* Team Photo */}
           <div className="relative overflow-hidden mb-8 border-2 border-gray-300 shadow-lg">
             <img
-              src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&h=400&fit=crop&q=80"
+              src="/images/2.jpg"
               alt="Equipo de profesionales certificados"
               className="w-full h-64 object-cover"
             />
@@ -132,7 +132,7 @@ const AboutUs: React.FC = () => {
       >
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=600&fit=crop&q=80"
+            src="/images/equipo.jpg"
             alt="Control de plagas profesional"
             className="w-full h-full object-cover"
           />

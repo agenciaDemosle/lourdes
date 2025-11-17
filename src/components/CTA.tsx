@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, ArrowRight } from 'lucide-react';
-import { trackCTAClick } from '../services/gtm';
+import { Calendar, ArrowRight, MessageCircle } from 'lucide-react';
+import { trackWhatsAppClick } from '../services/gtm';
 
 const CTA: React.FC = () => {
   return (
@@ -29,12 +29,19 @@ const CTA: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => {
-              trackCTAClick('Agendar Visita Técnica', 'cta_section', 'general');
-              document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
+              const messageText = 'Hola, quiero agendar una visita técnica para fumigación y control de plagas';
+              trackWhatsAppClick(
+                'cta_section',
+                'visita_tecnica',
+                messageText,
+                'AGENDAR POR WHATSAPP'
+              );
+              window.open(`https://wa.me/56976931562?text=${encodeURIComponent(messageText)}`, '_blank');
             }}
-            className="bg-brand-red text-white px-6 sm:px-8 py-3 sm:py-4 font-black text-base sm:text-lg uppercase tracking-wider hover:bg-red-700 transition-all inline-flex items-center group border-2 border-brand-red"
+            className="bg-[#25D366] text-white px-6 sm:px-8 py-3 sm:py-4 font-black text-base sm:text-lg uppercase tracking-wider hover:bg-[#20BD5A] transition-all inline-flex items-center group border-2 border-[#25D366]"
           >
-            AGENDAR VISITA TÉCNICA
+            <MessageCircle className="mr-2 w-5 h-5" />
+            AGENDAR POR WHATSAPP
             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </motion.button>
 

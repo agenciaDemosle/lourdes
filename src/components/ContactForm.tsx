@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast, { Toaster } from 'react-hot-toast';
@@ -22,24 +22,32 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 const ContactForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formStarted, setFormStarted] = useState(false);
+  // Usar useRef en lugar de useState para evitar duplicados en StrictMode
+  const formStarted = useRef(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    control,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
   });
 
-  // Función para trackear cuando el usuario empieza a llenar el formulario
-  const handleFormStart = () => {
-    if (!formStarted) {
-      trackFormStart('contact', 'general');
-      setFormStarted(true);
+  // Observar cambios en el campo servicio usando useWatch
+  const servicioValue = useWatch({
+    control,
+    name: 'servicio',
+  });
+
+  // Trackear form_start cuando se selecciona un servicio
+  useEffect(() => {
+    if (!formStarted.current && servicioValue && servicioValue !== '') {
+      trackFormStart('contact', servicioValue);
+      formStarted.current = true;
     }
-  };
+  }, [servicioValue]);
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
@@ -56,6 +64,8 @@ const ContactForm: React.FC = () => {
 
         toast.success(result.message || '¡Mensaje enviado correctamente!');
         reset();
+        // Resetear el flag para permitir trackear un nuevo form_start
+        formStarted.current = false;
       } else {
         toast.error(result.message || 'Error al enviar el mensaje');
       }
@@ -128,7 +138,6 @@ const ContactForm: React.FC = () => {
                 id="nombre"
                 className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-gray-900 focus:border-brand-red transition-all"
                 placeholder="Juan Pérez"
-                onFocus={handleFormStart}
               />
               {errors.nombre && (
                 <p className="mt-1 text-sm text-red-600">{errors.nombre.message}</p>
@@ -281,28 +290,6 @@ const ContactForm: React.FC = () => {
                 </div>
               ))}
             </div>
-          </div>
-
-          <div className="bg-white border-2 border-brand-red p-6 shadow-lg">
-            <h3 className="text-xl font-black text-white mb-4 uppercase tracking-wider">
-              ATENCIÓN DE EMERGENCIAS
-            </h3>
-            <p className="text-gray-600 mb-4">
-              ¿Tienes una emergencia de plagas? Contamos con servicio 24/7 para situaciones críticas.
-            </p>
-            <Button
-              variant="primary"
-              size="md"
-              fullWidth
-              onClick={() => {
-                trackPhoneClick('emergency_section', 'emergencia');
-                trackConversion('phone_call', 'emergencia');
-                window.location.href = 'tel:+56976931562';
-              }}
-            >
-              <Phone className="w-5 h-5 mr-2" />
-              LLAMAR AHORA
-            </Button>
           </div>
         </motion.div>
       </div>

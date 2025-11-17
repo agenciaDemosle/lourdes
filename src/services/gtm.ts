@@ -7,10 +7,75 @@ declare global {
   }
 }
 
+// Set para trackear eventos ya enviados y evitar duplicados
+const sentEvents = new Set<string>();
+const EVENT_TIMEOUT = 1000; // 1 segundo para considerar un evento como duplicado
+
+// Lista de todas las propiedades que usamos en el dataLayer
+const ALL_DATALAYER_KEYS = [
+  // WhatsApp
+  'click_location', 'button_type', 'button_text', 'contact_method',
+  'phone_number', 'message_text', 'message_preview', 'service_interested',
+  'event_category', 'event_label', 'interaction_type',
+  // Form
+  'form_name', 'service_selected',
+  // CTA
+  'cta_text', 'cta_section',
+  // Conversión
+  'conversion_type', 'conversion_value', 'lead_type', 'service',
+  // Comunes
+  'currency', 'value',
+  // Service
+  'service_name', 'service_type',
+  // Testimonial
+  'testimonial_index',
+  // Sector
+  'sector_name',
+  // Page
+  'page_path', 'page_title', 'page_section',
+  // FAQ
+  'faq_question', 'faq_category', 'faq_index', 'user_engagement',
+  // Scroll
+  'percent_scrolled', 'scroll_depth',
+  // Section
+  'section_name', 'view_type'
+];
+
 // Función base para enviar eventos a GTM
 export const pushToDataLayer = (event: string, data?: Record<string, any>) => {
   if (typeof window !== 'undefined') {
     window.dataLayer = window.dataLayer || [];
+
+    // Crear un ID único para el evento basado en el nombre y datos principales
+    const eventId = `${event}_${JSON.stringify(data || {})}`;
+
+    // Verificar si el evento ya fue enviado recientemente
+    if (sentEvents.has(eventId)) {
+      console.warn('⚠️ Evento duplicado bloqueado:', event, data);
+      return;
+    }
+
+    // Marcar el evento como enviado
+    sentEvents.add(eventId);
+
+    // Limpiar el evento del set después del timeout
+    setTimeout(() => {
+      sentEvents.delete(eventId);
+    }, EVENT_TIMEOUT);
+
+    // Log para debug
+    console.log('📊 GTM Event:', event, data);
+
+    // Primero resetear todas las propiedades a undefined (limpia el dataLayer)
+    const resetObject: Record<string, undefined> = {};
+    ALL_DATALAYER_KEYS.forEach(key => {
+      resetObject[key] = undefined;
+    });
+
+    // Push del reset
+    window.dataLayer.push(resetObject);
+
+    // Luego push del evento con los datos nuevos
     window.dataLayer.push({
       event,
       ...data
@@ -26,17 +91,35 @@ export const trackServiceClick = (serviceName: string, serviceType: string = 'ge
   });
 };
 
-// Tracking de WhatsApp
-export const trackWhatsAppClick = (location: string, service: string = 'general') => {
+// Tracking de WhatsApp mejorado para Google Ads
+export const trackWhatsAppClick = (
+  location: string,
+  service: string = 'general',
+  messageText?: string,
+  buttonText?: string
+) => {
   const value = getConversionValue('whatsapp_click', service);
+  const phoneNumber = '+56976931562'; // Número de WhatsApp de Lourdes
 
   pushToDataLayer('whatsapp_click', {
     click_location: location,
     button_type: location === 'floating' ? 'fixed' : 'primary',
+    button_text: buttonText || 'WhatsApp',
+    contact_method: 'whatsapp',
+    phone_number: phoneNumber,
+    message_text: messageText || '',
+    message_preview: messageText ? messageText.substring(0, 50) : '',
     service_interested: service,
     currency: 'CLP',
-    value: value
+    value: value,
+    // Datos específicos para Google Ads
+    event_category: 'engagement',
+    event_label: `whatsapp_${location}_${service}`,
+    interaction_type: 'whatsapp_message'
   });
+
+  // También trackear como conversión para Google Ads
+  trackConversion('whatsapp_click', service);
 };
 
 // Tracking de CTAs

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 import Section from './Section';
-import { trackFAQOpen, trackFAQClose, trackFAQCTAClick } from '../services/gtm';
+import { trackFAQOpen, trackFAQClose } from '../services/gtm';
 
 interface FAQItem {
   question: string;
@@ -157,41 +157,6 @@ const FAQ: React.FC = () => {
             </motion.div>
           ))}
         </div>
-
-        {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 text-center"
-        >
-          <div className="bg-gray-900 text-white p-8 rounded-lg">
-            <h3 className="text-2xl font-black mb-4 uppercase tracking-wider text-white">
-              ¿Tienes alguna pregunta específica?
-            </h3>
-            <p className="text-lg mb-6 text-gray-300">
-              Nuestro equipo de expertos está listo para asesorarte
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                trackFAQCTAClick();
-                document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="bg-brand-red text-white px-8 py-4 font-black text-lg uppercase tracking-wider hover:bg-red-700 transition-all inline-flex items-center gap-3"
-            >
-              Contactar Ahora
-              <motion.span
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                →
-              </motion.span>
-            </motion.button>
-          </div>
-        </motion.div>
       </div>
     </Section>
   );

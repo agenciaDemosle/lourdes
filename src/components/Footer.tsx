@@ -246,9 +246,16 @@ const Footer: React.FC = () => {
                       href="https://wa.me/56976931562?text=Hola,%20necesito%20información%20sobre%20sus%20servicios%20de%20fumigación"
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={() => {
-                        trackWhatsAppClick('footer_contact_info', 'general');
-                        trackConversion('whatsapp_click', 'general');
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const messageText = 'Hola, necesito información sobre sus servicios de fumigación';
+                        trackWhatsAppClick(
+                          'footer_contact_info',
+                          'general',
+                          messageText,
+                          'Escribir mensaje'
+                        );
+                        window.open(`https://wa.me/56976931562?text=${encodeURIComponent(messageText)}`, '_blank');
                       }}
                       className="text-gray-300 hover:text-green-500 transition-colors font-bold text-sm"
                     >

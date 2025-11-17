@@ -9,11 +9,12 @@ import {
   Trash2,
   Building2,
   Droplets,
-  Sprout
+  Sprout,
+  MessageCircle
 } from 'lucide-react';
 import Section from './Section';
 import ServiceCard from './ServiceCard';
-import { trackCTAClick } from '../services/gtm';
+import { trackWhatsAppClick } from '../services/gtm';
 
 const services = [
   {
@@ -38,7 +39,7 @@ const services = [
     icon: Trash2,
     title: 'Limpieza de Shafts de Basura',
     description: 'Los shafts de basura en edificios requieren mantención regular para evitar malos olores, plagas y obstrucciones. Nuestro servicio asegura ductos limpios, higiénicos y en correcto funcionamiento.',
-    image: '/images/otros.jpeg',
+    image: '/images/shaft.webp',
     details: [
       'Mantenimiento preventivo anual',
       'Eliminación de malos olores',
@@ -92,7 +93,7 @@ const services = [
     icon: Sprout,
     title: 'Herbicidas y Áreas Verdes',
     description: 'Contamos con autorización SAG y SEREMI para la aplicación de herbicidas en áreas verdes y espacios perimetrales. Ofrecemos soluciones seguras para la eliminación de malezas en jardines, accesos y áreas comunes.',
-    image: '/images/otros.jpeg',
+    image: '/images/herbicida.jpg',
     details: [
       'Herbicidas selectivos y no selectivos',
       'Aplicación segura y regulada',
@@ -110,7 +111,7 @@ const services = [
     icon: Shield,
     title: 'Tratamientos Preventivos',
     description: 'Programas de prevención para evitar la aparición de plagas en su propiedad.',
-    image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&h=600&fit=crop&q=80',
+    image: '/images/sanitizacion-preventiva.webp',
     details: [
       'Análisis de riesgos',
       'Barreras físicas y químicas',
@@ -124,7 +125,7 @@ const services = [
     icon: Calendar,
     title: 'Planes Periódicos',
     description: 'Mantenimiento regular para empresas y hogares con visitas programadas.',
-    image: '/images/empresa.jpeg',
+    image: '/images/control-de-plagas-en-empresas.jpg',
     details: [
       'Visitas mensuales o trimestrales',
       'Precio preferencial por contrato',
@@ -138,7 +139,7 @@ const services = [
     icon: Building2,
     title: 'Compromiso con la Administración',
     description: 'En Fumigaciones Lourdes entendemos las necesidades de las comunidades y administraciones de edificios. Ofrecemos informes de gestión, trazabilidad de cada servicio y asesoría técnica permanente.',
-    image: '/images/empresa.jpeg',
+    image: '/images/plaga-edificio-publico.webp',
     details: [
       'Informes de gestión y trazabilidad digital',
       'Atención personalizada',
@@ -263,12 +264,19 @@ const Services: React.FC = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
-                  trackCTAClick('Consultar Servicio Personalizado', 'services_section', 'general');
-                  document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
+                  const messageText = 'Hola, necesito consultar sobre un servicio personalizado de control de plagas';
+                  trackWhatsAppClick(
+                    'services_section',
+                    'servicio_personalizado',
+                    messageText,
+                    'Consultar por WhatsApp'
+                  );
+                  window.open(`https://wa.me/56976931562?text=${encodeURIComponent(messageText)}`, '_blank');
                 }}
-                className="bg-brand-red text-white px-8 py-4 font-black text-lg uppercase tracking-wider hover:bg-red-700 transition-all inline-flex items-center gap-3 border-2 border-brand-red"
+                className="bg-[#25D366] text-white px-8 py-4 font-black text-lg uppercase tracking-wider hover:bg-[#20BD5A] transition-all inline-flex items-center gap-3 border-2 border-[#25D366]"
               >
-                Consultar Servicio Personalizado
+                <MessageCircle className="w-6 h-6" />
+                Consultar por WhatsApp
                 <motion.span
                   animate={{ x: [0, 5, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
